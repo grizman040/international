@@ -13,8 +13,8 @@ router.get('/protected',requireLogin, (req,res)=>{
 })
 
 
-router.get("*", (req, res) => {
-  res.send("Hello");
+router.get("/", (req, res) => {
+  res.redirect("/signin");
 });
 router.post("/signup", (req, res) => {
   const { name, email, password,pic } = req.body;
