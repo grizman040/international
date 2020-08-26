@@ -10,6 +10,10 @@ import CreatePost from './components/screen/createPost';
 import {reducer, initialState} from './reducers/userReducer';
 import UserProfile from "./components/screen/UserProfile";
 import SubscribeUserPost from "./components/screen/SubscribeUserPost";
+import Reset from './components/screen/resetPassword';
+import CreateNewPassword from './components/screen/NewPassword';
+
+
 
 export const UserContext = createContext()
 
@@ -24,6 +28,7 @@ if(user){
   // history.push('/')
 
 }else{
+  if(!history.location.pathname.startsWith('/reset'))
   history.push('/signin')
 }
   },[])
@@ -49,6 +54,12 @@ if(user){
       </Route>
       <Route path='/myfollowerspost'>
         <SubscribeUserPost />
+      </Route>
+      <Route exact path='/reset'>
+        <Reset />
+      </Route>
+      <Route  path='/reset/:token'>
+        <CreateNewPassword />
       </Route>
     </Switch>
 

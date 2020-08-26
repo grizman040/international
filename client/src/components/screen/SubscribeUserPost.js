@@ -106,6 +106,7 @@ const Home  = ()=>{
             const newData = data.filter(item=>{
                 return item._id !== result._id
             })
+            console.log(newData);
             setData(newData)
         })
     }

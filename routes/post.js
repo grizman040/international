@@ -9,8 +9,11 @@ router.get('/allposts', requireLogin, (req, res) => {
     Post.find()
         .populate("postedBy", "_id name")  // what info we want to get from the user data -- in this case only NAME
         .populate("comments.postedBy", "_id name")
+        .sort('-createdAt')
+
         .then(posts => {
             res.json({ posts })
+            // console.log(posts);
         })
         .catch(err => {
             console.log(err);
@@ -22,6 +25,7 @@ router.get('/getsubpost', requireLogin, (req, res) => {
     Post.find({postedBy:{$in:req.user.following}})
         .populate("postedBy", "_id name")  // what info we want to get from the user data -- in this case only NAME
         .populate("comments.postedBy", "_id name")
+        .sort('-createdAt')
         .then(posts => {
             res.json({ posts })
         })
@@ -130,7 +134,7 @@ router.delete('/deletepost/:postId', requireLogin, (req, res) => {
             if (post.postedBy._id.toString() === req.user._id.toString()) {
                 post.remove()
                     .then(result => {
-                        res.json({ result })
+                        res.json( result )
                     }).catch(err => {
                         console.log(err);
                     })

@@ -15,7 +15,9 @@ a {
     margin: 15px auto;
     
 }
-
+.collection-item {
+    width: 100%;
+}
 .gallery{
     display:flex;
     flex-wrap: wrap;

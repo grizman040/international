@@ -1,53 +1,136 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { UserContext } from "../App";
+import M from "materialize-css";
 
 const Navbar = () => {
-
-  const { state, dispatch } = useContext(UserContext)
-  const history = useHistory()
+  const searchModal = useRef(null);
+  const [search, setSearch] = useState("");
+  const [userDetails, setUserDetails] = useState([]);
+  const { state, dispatch } = useContext(UserContext);
+  const history = useHistory();
+  useEffect(() => {
+    M.Modal.init(searchModal.current);
+  }, []);
   const renderList = () => {
     if (state) {
       return [
-        <li style= {{textTransform:"capitalize" }}><Link to="/profile"> {state.name}</Link></li>,
-        <li ><Link to="/create">Create Dish</Link></li>,
-        <li ><Link to='/myfollowerspost'>My Following Cookers</Link></li>,
-      // <li style={{color:"black", textTransform:"capitalize" }}> {state.name} </li>,
-        <li>
-          <button className="btn waves-effect waves-light #64b5f6 blue darken-1"
-            onClick={() => {localStorage.clear()
-            dispatch({type:"CLEAR"})
-            history.push('/signin')
-          }}
+        <li key="search">
+          <i
+            data-target="modal1"
+            className="large material-icons modal-trigger"
+            style={{ color: "black" }}
+          >
+            search
+          </i>
+        </li>,
+        <li key="profile" style={{ textTransform: "capitalize" }}>
+          <Link to="/profile"> {state.name}</Link>
+        </li>,
+        <li key="create-post">
+          <Link to="/create">Create Dish</Link>
+        </li>,
+        <li key="follow">
+          <Link to="/myfollowerspost">My Following Cookers</Link>
+        </li>,
+        // <li style={{color:"black", textTransform:"capitalize" }}> {state.name} </li>,
+        <li key="logout">
+          <button
+            className="btn waves-effect waves-light #64b5f6 blue darken-1"
+            onClick={() => {
+              localStorage.clear();
+              dispatch({ type: "CLEAR" });
+              history.push("/signin");
+            }}
           >
             LogOut
-            </button>
-        </li>
-     
-
-
-      ]
+          </button>
+        </li>,
+      ];
     } else {
       return [
-
-        <li><Link to="/signin">Sign In</Link></li>,
-        <li><Link to="/signup">Sign Up</Link></li>
-      ]
-
+        <li key="signin">
+          <Link to="/signin">Sign In</Link>
+        </li>,
+        <li key="signup">
+          <Link to="/signup">Sign Up</Link>
+        </li>,
+      ];
     }
-  }
+  };
+  const fetchUsers = (query) => {
+    setSearch(query);
+    fetch("/search-users", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query,
+      }),
+    })
+      .then((res) => res.json())
+      .then((results) => {
+        setUserDetails(results.user);
+      });
+  };
 
   return (
     <nav>
-      <div className="nav-wrapper white" >
-        <Link to={state ? "/" : "/signin"} className="brand-logo left">International Cooking</Link>
+      <div className="nav-wrapper white">
+        <Link to={state ? "/" : "/signin"} className="brand-logo left">
+          International Cooking
+        </Link>
         <ul id="nav-mobile" className="right hide-on-med-and-down">
-
           {renderList()}
-
         </ul>
+        <div
+          id="modal1"
+          className="modal"
+          ref={searchModal}
+          style={{ color: "black" }}
+        >
+          <div className="modal-content">
+            <input
+              type="text"
+              placeholder="search"
+              value={search}
+              onChange={(e) => fetchUsers(e.target.value)}
+            />
+            <ul className="collection">
+              {userDetails.map((item) => {
+                return (
+                  <Link
+                    to={
+                      item._id !== state._id
+                        ? "/profile/" + item._id
+                        : "/profile"
+                    }
+                    onClick={() => {
+                      M.Modal.getInstance(searchModal.current).close();
+                      setSearch("");
+                    }}
+                  >
+                    {" "}
+                    <li key={item.email} className="collection-item">
+                      {item.email}
+                    </li>
+                  </Link>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="modal-footer">
+            <button
+              className="modal-close waves-effect waves-green btn-flat"
+              onClick={() => setSearch("")}
+            >
+              Close
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
-  )
-}
-export default Navbar
+  );
+};
+export default Navbar;

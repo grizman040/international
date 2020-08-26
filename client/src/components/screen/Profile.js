@@ -61,10 +61,10 @@ const Profile = () => {
  },[image])
   const updatePhoto = (file) => {
     setImage(file)
-
-   
   } 
-  console.log(state);
+
+
+  // console.log(state);  
   return (
     <div className="profilePage">
       <div
@@ -79,7 +79,7 @@ const Profile = () => {
         <div>
           <img
             style={{ width: "200px", height: "200px", borderRadius: "50%" }}
-            src={state? state.pic:"loading"} alt=""
+            src={state? state.pic:""} alt=""
           />
           <div>
 
@@ -111,9 +111,9 @@ const Profile = () => {
 
             >
 
-              <div>{myPics.length} posts</div>
-              <div>5 Followers</div>
-              <div>5 Following</div>
+              <h6>{myPics.length} posts</h6>
+              <h6>{state? state.followers.length:"0"} followers</h6>
+              <h6>{state?state.following.length:"0"} following</h6>
             </div>
           </div>
         </div>

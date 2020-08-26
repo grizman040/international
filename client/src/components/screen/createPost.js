@@ -20,7 +20,7 @@ const CreatePost = () => {
     })
     .then(res=>res.json())
     .then(data=>{
-      console.log(data);
+      // console.log(data);
       fetch("/createpost", {
         method: "post",
         headers: {
@@ -36,7 +36,7 @@ const CreatePost = () => {
     }).then(res => res.json())
     
         .then(data => {
-          console.log(data);
+          // console.log(data);
             if (data.error) {
                 M.toast({ html: data.error, classes: "#ef5350 red lighten-1" })
             }

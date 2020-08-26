@@ -2,9 +2,14 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 5000
-const bcrypt = require('bcryptjs')
 const { MONGOURI } = require("./config/dev");
 
+mongoose.connect(MONGOURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+});
 
 
 
@@ -17,12 +22,6 @@ app.use(require('./routes/user'));
 
 
 
-mongoose.connect(MONGOURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
-});
 // .then(() => console.log("connection to database Establish"));
 mongoose.connection.on("connected", () => {
   console.log("Connected to mongo DATA BASE");
