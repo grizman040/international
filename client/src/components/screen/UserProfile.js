@@ -7,6 +7,7 @@ const Profile = () => {
     const { state, dispatch } = useContext(UserContext)
     const { userid } = useParams()
     const [showFollow,setShowFollow]=useState(state?!state.following.includes(userid):true)
+    console.log('testing user ' + userid);
 
     useEffect(() => {
         fetch(`/user/${userid}`, {
@@ -19,7 +20,7 @@ const Profile = () => {
 
                 setProfile(result)
             })
-    }, [])
+    }, [userid])
     const followUser = () => {
         fetch('/follow', {
             method: 'PUT',

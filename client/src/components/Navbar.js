@@ -72,6 +72,7 @@ const Navbar = () => {
       .then((res) => res.json())
       .then((results) => {
         setUserDetails(results.user);
+        
       });
   };
 
@@ -100,7 +101,7 @@ const Navbar = () => {
             <ul className="collection">
               {userDetails.map((item) => {
                 return (
-                  <Link
+                  <Link key={item.email}
                     to={
                       item._id !== state._id
                         ? "/profile/" + item._id
@@ -112,7 +113,7 @@ const Navbar = () => {
                     }}
                   >
                     {" "}
-                    <li key={item.email} className="collection-item">
+                    <li  className="collection-item">
                       {item.email}
                     </li>
                   </Link>
