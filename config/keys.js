@@ -3,7 +3,6 @@
 //     JWT_SECRET:"fskjnkjn4bnj43hb"
 // }
 
-//sendgrid Api_key : "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"
 //https://cloudinary.com/:  !NcvyvkMPD5FSi_
 
 //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
