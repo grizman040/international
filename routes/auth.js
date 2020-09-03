@@ -9,10 +9,11 @@ const { JWT_SECRET } = require('../config/dev')
 const requireLogin = require('../middleware/requireLogin')
 const nodemailer = require('nodemailer')
 const sendgridTransport = require('nodemailer-sendgrid-transport')
+const {SENDGRID_API,EMAILURI} = require('../config/dev')
 
 const transporter = nodemailer.createTransport(sendgridTransport({
   auth: {
-    api_key: "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"
+    api_key: SENDGRID_API
   }
 }))
 
@@ -21,9 +22,9 @@ router.get('/protected', requireLogin, (req, res) => {
 })
 
 
-router.get("/", (req, res) => {
-  res.redirect("/signin");
-});
+// router.get("/", (req, res) => {
+//   res.redirect("/signin");
+// });
 router.post("/signup", (req, res) => {
   const { name, email, password, pic } = req.body;
   if (!email || !password || !name) {
@@ -50,7 +51,7 @@ router.post("/signup", (req, res) => {
           .then((user) => {
             transporter.sendMail({
               to: user.email,
-              from: "devco@gmx.de",
+              from: "info@mailinator.com",
               subject: "signup success",
               html: "<h1>Welcome to International Cooker</h1>"
             })
@@ -96,6 +97,7 @@ router.post("/signin", (req, res) => {
   });
 });
 router.post('/reset-password', (req, res) => {
+  console.log('reset password called');
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
       console.log(err)
@@ -111,19 +113,20 @@ router.post('/reset-password', (req, res) => {
         user.save().then((result) => {
           transporter.sendMail({
             to: user.email,
-            from: "devco@gmx.de",
+            from: "info@mailinator.com",
             subject: "Reset your password",
             html: `
                   <p>You requested for password reset</p>
-                  <h5>click in this <a href="http://localhost:3000/reset/${token}">link</a> to reset password</h5>
+                  <h5>click in this <a href="${EMAILURI}/reset/${token}">link</a> to reset password</h5>
                   `
 
           })
+          console.log('email sent');
           res.json({ message: "check your email" })
         })
 
-      })
-  })
+      });
+})
 })
 router.post('/new-password', (req, res) => {
   const newPassword = req.body.password
@@ -133,17 +136,17 @@ router.post('/new-password', (req, res) => {
       if (!user) {
         return res.status(422).json({ error: "try again" })
       }
-      bcrypt.hash(newPassword,12).then(hashedPassword=>{
+      bcrypt.hash(newPassword, 12).then(hashedPassword => {
         user.password = hashedPassword
         user.resetToken = undefined
         user.expireToken = undefined
-        user.save().then((savedUser)=>{
-          res.json({message:"password updated success"})
+        user.save().then((savedUser) => {
+          res.json({ message: "password updated success" })
+        })
       })
-   })
-}).catch(err=>{
-   console.log(err)
-})
+    }).catch(err => {
+      console.log(err)
+    })
 })
 
 module.exports = router;

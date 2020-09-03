@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { UserContext } from '../../App'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
+console.log(moment().startOf('day').fromNow());
+
 const Home = () => {
     const [data, setData] = useState([])
     const { state, dispatch } = useContext(UserContext)
@@ -15,7 +18,6 @@ const Home = () => {
                 setData(result.posts)
             })
     }, [])
-
     const likePost = (id) => {
         fetch('/like', {
             method: "put",
@@ -28,8 +30,9 @@ const Home = () => {
             })
         }).then(res => res.json())
             .then(result => {
-                //   console.log(result)
+                console.log(result)
                 const newData = data.map(item => {
+
                     if (item._id == result._id) {
                         return result
                     } else {
@@ -116,7 +119,7 @@ const Home = () => {
                     return (
                         <div className="card home-card" key={item._id}>
                             <h5 style={{ padding: "5px" }}><Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>{item.postedBy.name}</Link> {item.postedBy._id == state._id
-                                && <i className="material-icons" style={{
+                                && <i className="material-icons deleteIcon" style={{
                                     float: "right"
                                 }}
                                     onClick={() => deletePost(item._id)}
@@ -127,36 +130,44 @@ const Home = () => {
                                 <img src={item.photo} />
                             </div>
                             <div className="card-content">
-                                <i className="material-icons" style={{ color: "red" }}>favorite</i>
                                 {item.likes.includes(state._id)
                                     ?
-                                    <i className="material-icons"
+                                    <i className="material-icons likeIcon" style={{ color: "red" }}
                                         onClick={() => { unlikePost(item._id) }}
-                                    >thumb_down</i>
+                                    >favorite</i>
                                     :
-                                    <i className="material-icons"
+                                    <i className="material-icons likeIcon"
                                         onClick={() => { likePost(item._id) }}
-                                    >thumb_up</i>
+                                    >favorite_border</i>
                                 }
-
-
                                 <h6>{item.likes.length} likes</h6>
-                                <h6>{item.title}</h6>
-                                <p>{item.body}</p>
+                                <div className="postBody">
+                                    <h6><span className="userName"></span> {item.title}</h6>
+                                    <p style={{ fontWeight: "bold" }} >{item.body}</p>
+                                </div>
+
                                 {
                                     item.comments.map(record => {
                                         return (
-                                            <h6 key={record._id}><span style={{ fontWeight: "500" }}>{record.postedBy.name}</span> {record.text}</h6>
+                                            <div key={record._id} className="commentArea">
+                                                <p  ><span className="userName">{record.postedBy.name}</span> {record.text}</p>
+                                  
+                                                
+                                            </div>
+
+
                                         )
+
                                     })
                                 }
+                                <p className="createdAt">{moment(item.createdAt).startOf().fromNow()}</p>
+
                                 <form onSubmit={(e) => {
                                     e.preventDefault()
                                     makeComment(e.target[0].value, item._id)
                                 }}>
                                     <input type="text" placeholder="add a comment" />
                                 </form>
-
                             </div>
                         </div>
                     )

@@ -75,7 +75,9 @@ router.put('/like', requireLogin, (req, res) => {
 
         
     }).populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
     .exec((err, result) => {
+        console.log(result);
         if (err) {
             return res.status(422).json({ error: err })
         } else {
@@ -92,6 +94,9 @@ router.put('/unlike', requireLogin, (req, res) => {
 
     })
     .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
+    
+
 
     .exec((err, result) => {
         if (err) {

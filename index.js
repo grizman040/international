@@ -4,13 +4,20 @@ const mongoose = require("mongoose");
 const PORT = process.env.PORT || 5000
 const { MONGOURI } = require("./config/dev");
 
+// mongoose.connect(MONGOURI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useFindAndModify: false,
+//   useCreateIndex: true,
+// });
 mongoose.connect(MONGOURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
-});
-
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  })
+  .then(() => console.log("DB Connection works"))
+  .catch((err) => console.log("DB Connection failed", err))
 
 
 require('./models/user')
@@ -23,17 +30,17 @@ app.use(require('./routes/user'));
 
 
 // .then(() => console.log("connection to database Establish"));
-mongoose.connection.on("connected", () => {
-  console.log("Connected to mongo DATA BASE");
-});
-mongoose.connection.on("error", (err) => {
-  console.log("Error connecting", err);
-});
+// mongoose.connection.on("connected", () => {
+//   console.log("Connected to mongo DATA BASE");
+// });
+// mongoose.connection.on("error", (err) => {
+//   console.log("Error connecting", err);
+// });
 
 
 if(process.env.NODE_ENV=="production"){
-  app.use(express.static('client/build'))
   const path = require('path')
+  app.use(express.static( path.join(__dirname, 'client', 'build')))
   app.get("*",(req,res)=>{
       res.sendFile(path.resolve(__dirname,'client','build','index.html'))
   })
