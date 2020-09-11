@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        // unique:true,
+        unique:true,
         // index:true,
     },
     email: {
@@ -20,6 +20,12 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    
+    country:{
+        type:String,
+        ref:"User",
+        required:true
     },
     pic:{
         type:String,

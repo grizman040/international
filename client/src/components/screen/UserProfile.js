@@ -6,7 +6,7 @@ const Profile = () => {
 
     const { state, dispatch } = useContext(UserContext)
     const { userid } = useParams()
-    const [showFollow,setShowFollow]=useState(state?!state.following.includes(userid):true)
+    const [showFollow, setShowFollow] = useState(state ? !state.following.includes(userid) : true)
     console.log('testing user ' + userid);
 
     useEffect(() => {
@@ -72,14 +72,14 @@ const Profile = () => {
                 console.log(data);
                 dispatch({ type: "UPDATE", payload: { following: data.following, followers: data.followers } })
                 localStorage.setItem("user", JSON.stringify(data))
-               
+
                 setProfile((prevState) => {
-                    const newFollower = prevState.user.followers.filter(item=>item !== data._id)
+                    const newFollower = prevState.user.followers.filter(item => item !== data._id)
                     return {
                         ...prevState,
                         user: {
                             ...prevState.user,
-                            followers:newFollower
+                            followers: newFollower
                         }
                     }
                 })
@@ -106,30 +106,37 @@ const Profile = () => {
                             />
                         </div>
                         <div>
-                            <h4>{userProfile.user.name}</h4>
+                            <div style={{
+                                display:"flex",
+                                justifyContent:"space-around"
+                            }}>
+                                <h4>{userProfile.user.name}</h4>
+                                <img className="flagCountryProfile" src={`https://www.countryflags.io/${state ? state.country : ""}/shiny/64.png`} />
+
+                            </div>
                             <h5>{userProfile.user.email}</h5>
                             <div style={{ display: "flex", justifyContent: "space-between", width: "108%" }}>
                                 <h6>{userProfile.posts.length} posts</h6>
                                 <h6>{userProfile.user.followers.length} followers</h6>
                                 <h6>{userProfile.user.following.length} following</h6>
                             </div>
-                            {showFollow? 
-                              <button className="btn waves-effect waves-light #64b5f6 blue darken-1"
-                              onClick={() => followUser()}
-                          >
-                              Follow
+                            {showFollow ?
+                                <button className="btn waves-effect waves-light #64b5f6 blue darken-1"
+                                    onClick={() => followUser()}
+                                >
+                                    Follow
           </button>
-          :
-  <button className="btn waves-effect waves-light #64b5f6 blue darken-1"
-                                onClick={() => unFollowUser()}
-                            >
-                                Unfollow
+                                :
+                                <button className="btn waves-effect waves-light #64b5f6 blue darken-1"
+                                    onClick={() => unFollowUser()}
+                                >
+                                    Unfollow
             </button>
-                             
+
 
                             }
-                         
-          
+
+
 
 
 

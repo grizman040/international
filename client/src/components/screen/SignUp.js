@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
+import { CountryDropdown } from "react-country-region-selector";
 
 
 const SignUp = () => {
@@ -10,6 +11,7 @@ const SignUp = () => {
     const [email, setEmail] = useState("")
     const [image,setImage]= useState("")
     const [url,setUrl]= useState(undefined)
+    const [ country, setCountry] = useState("")
 
     useEffect(()=>{
         if(url){
@@ -52,7 +54,8 @@ const SignUp = () => {
                 name,
                 password,
                 email,
-                pic:url
+                pic:url,
+                country
             })
         }).then(res => res.json())
             .then(data => {
@@ -88,6 +91,16 @@ const SignUp = () => {
                 <input type="text" placeholder="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)} />
+                          <div>
+        <CountryDropdown
+          value={country}
+          valueType="short"
+          onChange={(val) => setCountry(val)} />
+        {/* <RegionDropdown
+          country={country}
+          value={region}
+          onChange={(val) => this.selectRegion(val)} /> */}
+      </div>
                 <input type="password" placeholder="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)} />

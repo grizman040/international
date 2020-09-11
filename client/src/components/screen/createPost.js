@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import M from "materialize-css";
+import { CountryDropdown} from 'react-country-region-selector';
+
 
 
 const CreatePost = () => {
@@ -8,6 +10,7 @@ const CreatePost = () => {
   const [title, setTitle] = useState("")
   const [body, setBody] = useState("")
   const [image,setImage] = useState("")
+  const [ country, setCountry ] = useState("")
   // const [url, setUrl] = useState("")
   const postDetails = ()=>{
     const data = new FormData()
@@ -31,7 +34,8 @@ const CreatePost = () => {
         body: JSON.stringify({
             title,
             body,
-            photo:data.url
+            photo:data.url,
+            country
         })
     }).then(res => res.json())
     
@@ -87,6 +91,17 @@ const CreatePost = () => {
           <input className="file-path validate" type="text" />
         </div>
       </div>
+      <div>
+        <CountryDropdown
+          value={country}
+          valueType="short"
+          onChange={(val) => setCountry(val)} />
+        {/* <RegionDropdown
+          country={country}
+          value={region}
+          onChange={(val) => this.selectRegion(val)} /> */}
+      </div>
+      
       <button className="btn waves-effect waves-light #42a5f5 blue darken-1"
       onClick={(e)=>postDetails()}>
         Submit post

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { UserContext } from '../../App'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-console.log(moment().startOf('day').fromNow());
+// console.log(moment().startOf('day').fromNow()); timer, from what time was created
 
 const Home = () => {
     const [data, setData] = useState([])
@@ -118,7 +118,21 @@ const Home = () => {
                 data.map(item => {
                     return (
                         <div className="card home-card" key={item._id}>
-                            <h5 style={{ padding: "5px" }}><Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>{item.postedBy.name}</Link> {item.postedBy._id == state._id
+                            <h5 style={{ padding: "5px" }}>
+                                
+                                <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
+                                  <img className="avatar" src={item.postedBy.pic}/>
+                                    {item.postedBy.name}
+                            </Link>
+                            {item.postedBy._id !== state._id
+                                && <img className="countryFlag" style={{
+                                    float: "right"
+                                }}
+                                 src={`https://www.countryflags.io/${item.postedBy.country}/shiny/64.png`}
+                                />
+                                 
+                }
+                             {item.postedBy._id == state._id
                                 && <i className="material-icons deleteIcon" style={{
                                     float: "right"
                                 }}

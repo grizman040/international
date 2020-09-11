@@ -65,3 +65,21 @@ a {
 .material-icons{
     cursor:pointer;
 }
+select{
+    display: block;
+}
+.avatar{
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+.countryFlag{
+    width: 40pd .x;
+}
+.flagCountryProfile{
+    width: 70px;
+    height: 7vh;
+    margin-top: 5px;
+}

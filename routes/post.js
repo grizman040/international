@@ -7,7 +7,7 @@ const Post = mongoose.model("Post")
 
 router.get('/allposts', requireLogin, (req, res) => {
     Post.find()
-        .populate("postedBy", "_id name")  // what info we want to get from the user data -- in this case only NAME
+        .populate("postedBy", "country pic _id name")  // what info we want to get from the user data -- in this case only NAME
         .populate("comments.postedBy", "_id name")
         .sort('-createdAt')
 
@@ -23,8 +23,8 @@ router.get('/allposts', requireLogin, (req, res) => {
 router.get('/getsubpost', requireLogin, (req, res) => {
     //if is posted by? we will check
     Post.find({postedBy:{$in:req.user.following}})
-        .populate("postedBy", "_id name")  // what info we want to get from the user data -- in this case only NAME
-        .populate("comments.postedBy", "_id name")
+        .populate("postedBy", "country _id name")  // what info we want to get from the user data -- in this case only NAME
+        .populate("comments.postedBy", " country _id name")
         .sort('-createdAt')
         .then(posts => {
             res.json({ posts })
@@ -35,8 +35,8 @@ router.get('/getsubpost', requireLogin, (req, res) => {
 })
 
 router.post('/createpost', requireLogin, (req, res) => {
-    const { title, body, photo } = req.body
-    if (!title || !body || !photo) {
+    const { title, body, photo,country } = req.body
+    if (!title || !body || !photo||!country) {
         return res.status(422).json({ error: " please add all fields" })
     }
 
@@ -45,7 +45,8 @@ router.post('/createpost', requireLogin, (req, res) => {
         title,
         body,
         photo,
-        postedBy: req.user
+        postedBy: req.user,
+        country
     })
     post.save().then(result => {
         res.json({ post: result })
@@ -58,7 +59,7 @@ router.post('/createpost', requireLogin, (req, res) => {
 
 router.get('/mypost', requireLogin, (req, res) => {
     Post.find({ postedBy: req.user._id })
-        .populate("PostedBy", "_id name")
+        .populate("PostedBy", "country pic _id name")
         .then(mypost => {
             res.json({ mypost })
         })
@@ -74,8 +75,8 @@ router.put('/like', requireLogin, (req, res) => {
         new: true
 
         
-    }).populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    }).populate("postedBy", " country _id name")
+    .populate("comments.postedBy", " pic _id name")
     .exec((err, result) => {
         console.log(result);
         if (err) {
@@ -118,8 +119,8 @@ router.put('/comment', requireLogin, (req, res) => {
         new: true
 
     })
-        .populate("comments.postedBy", "_id name")
-        .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "pic _id name")
+        .populate("postedBy", "pic _id name")
         .exec((err, result) => {
             if (err) {
                 return res.status(422).json({ error: err })

@@ -23,6 +23,11 @@ const postSchema = new mongoose.Schema({
        type:ObjectId,
        ref:"User",
        required:true
+    },
+    country:{
+        type:String,
+        ref:"User",
+        required:true
     }
 },{timestamps:true})
 

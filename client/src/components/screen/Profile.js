@@ -22,46 +22,46 @@ const Profile = () => {
 
 
   }, [])
-  useEffect(()=>{
-    if(image){
-     const data = new FormData()
-     data.append("file",image)
-     data.append("upload_preset","insta-clone")
-     data.append("cloud_name", "dqpxnyjss")
-     fetch("https://api.cloudinary.com/v1_1/dqpxnyjss/image/upload",{
-       method:"post",
-       body:data
-     })
-     .then(res=>res.json())
-     .then(data=>{
- 
-    
-        fetch('/updatepic',{
-            method:"put",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+localStorage.getItem("jwt")
+  useEffect(() => {
+    if (image) {
+      const data = new FormData()
+      data.append("file", image)
+      data.append("upload_preset", "insta-clone")
+      data.append("cloud_name", "dqpxnyjss")
+      fetch("https://api.cloudinary.com/v1_1/dqpxnyjss/image/upload", {
+        method: "post",
+        body: data
+      })
+        .then(res => res.json())
+        .then(data => {
+
+
+          fetch('/updatepic', {
+            method: "put",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + localStorage.getItem("jwt")
             },
-            body:JSON.stringify({
-                pic:data.url
+            body: JSON.stringify({
+              pic: data.url
             })
-        }).then(res=>res.json())
-        .then(result=>{
-            console.log(result)
-            localStorage.setItem("user",JSON.stringify({...state,pic:result.pic}))
-            dispatch({type:"UPDATEPIC",payload:result.pic})
-            // window.location.reload()
+          }).then(res => res.json())
+            .then(result => {
+              console.log(result)
+              localStorage.setItem("user", JSON.stringify({ ...state, pic: result.pic }))
+              dispatch({ type: "UPDATEPIC", payload: result.pic })
+              // window.location.reload()
+            })
+
         })
-    
-     })
-     .catch(err=>{
-         console.log(err)
-     })
+        .catch(err => {
+          console.log(err)
+        })
     }
- },[image])
+  }, [image])
   const updatePhoto = (file) => {
     setImage(file)
-  } 
+  }
 
 
   // console.log(state);  
@@ -79,7 +79,7 @@ const Profile = () => {
         <div>
           <img
             style={{ width: "200px", height: "200px", borderRadius: "50%" }}
-            src={state? state.pic:""} alt=""
+            src={state ? state.pic : ""} alt=""
           />
           <div>
 
@@ -100,7 +100,15 @@ const Profile = () => {
 
         <div>
           <div>
-            <h3>{state ? state.name : "loading"}</h3>
+            <div style={{
+              display: "flex",
+              justifyContent: "space-around",
+            }}>
+
+              <h3>{state ? state.name : "loading"}</h3>
+
+              <img className="flagCountryProfile" src={`https://www.countryflags.io/${state ? state.country : ""}/shiny/64.png`} />
+            </div>
             <h5>{state ? state.email : "loading"}</h5>
             <div
               style={{
@@ -112,8 +120,8 @@ const Profile = () => {
             >
 
               <h6>{myPics.length} posts</h6>
-              <h6>{state? state.followers.length:"0"} followers</h6>
-              <h6>{state?state.following.length:"0"} following</h6>
+              <h6>{state ? state.followers.length : "0"} followers</h6>
+              <h6>{state ? state.following.length : "0"} following</h6>
             </div>
           </div>
         </div>

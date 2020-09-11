@@ -26,8 +26,8 @@ router.get('/protected', requireLogin, (req, res) => {
 //   res.redirect("/signin");
 // });
 router.post("/signup", (req, res) => {
-  const { name, email, password, pic } = req.body;
-  if (!email || !password || !name) {
+  const { name, email, password, pic,country } = req.body;
+  if (!email || !password || !name||!country) {
     return res.status(422).json({ error: "please add all the fields" });
   }
   User.findOne({ email: email }).then((savedUser) => {
@@ -43,7 +43,8 @@ router.post("/signup", (req, res) => {
           name,
           email,
           password: hashedPassword,
-          pic
+          pic,
+          country
         });
         user
           .save()
@@ -85,8 +86,8 @@ router.post("/signin", (req, res) => {
         if (doMatch) {
           // res.json({ message: "successful signed in" });
           const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET)
-          const { _id, name, email, followers, following, pic } = savedUser
-          res.json({ token, user: { _id, name, email, followers, following, pic } })
+          const { _id, name, email, followers, following, pic,country } = savedUser
+          res.json({ token, user: { _id, name, email, followers, following, pic,country } })
         } else {
           return res.status(422).json({ error: "Invalid password or email" });
         }
