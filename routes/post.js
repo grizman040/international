@@ -8,7 +8,7 @@ const Post = mongoose.model("Post")
 router.get('/allposts', requireLogin, (req, res) => {
     Post.find()
         .populate("postedBy", "country pic _id name")  // what info we want to get from the user data -- in this case only NAME
-        .populate("comments.postedBy", "_id name")
+        .populate("comments.postedBy ", "pic _id name")
         .sort('-createdAt')
 
         .then(posts => {
@@ -24,7 +24,7 @@ router.get('/getsubpost', requireLogin, (req, res) => {
     //if is posted by? we will check
     Post.find({postedBy:{$in:req.user.following}})
         .populate("postedBy", "country _id name")  // what info we want to get from the user data -- in this case only NAME
-        .populate("comments.postedBy", " country _id name")
+        .populate("comments.postedBy pic", " country _id name")
         .sort('-createdAt')
         .then(posts => {
             res.json({ posts })
@@ -75,8 +75,8 @@ router.put('/like', requireLogin, (req, res) => {
         new: true
 
         
-    }).populate("postedBy", " country _id name")
-    .populate("comments.postedBy", " pic _id name")
+    }).populate("postedBy", "pic country _id name")
+    .populate("comments.postedBy", "pic _id name")
     .exec((err, result) => {
         console.log(result);
         if (err) {
@@ -94,8 +94,8 @@ router.put('/unlike', requireLogin, (req, res) => {
         new: true
 
     })
-    .populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "pic country _id name")
+    .populate("comments.postedBy", "pic _id name")
     
 
 
@@ -120,7 +120,7 @@ router.put('/comment', requireLogin, (req, res) => {
 
     })
         .populate("comments.postedBy", "pic _id name")
-        .populate("postedBy", "pic _id name")
+        .populate("postedBy", " pic _id name")
         .exec((err, result) => {
             if (err) {
                 return res.status(422).json({ error: err })

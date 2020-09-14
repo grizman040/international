@@ -79,7 +79,8 @@ const Home = () => {
             },
             body: JSON.stringify({
                 postId,
-                text
+                text,
+                // pic
             })
         }).then(res => res.json())
             .then(result => {
@@ -119,27 +120,27 @@ const Home = () => {
                     return (
                         <div className="card home-card" key={item._id}>
                             <h5 style={{ padding: "5px" }}>
-                                
-                                <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
-                                  <img className="avatar" src={item.postedBy.pic}/>
-                                    {item.postedBy.name}
-                            </Link>
-                            {item.postedBy._id !== state._id
-                                && <img className="countryFlag" style={{
-                                    float: "right"
-                                }}
-                                 src={`https://www.countryflags.io/${item.postedBy.country}/shiny/64.png`}
-                                />
-                                 
-                }
-                             {item.postedBy._id == state._id
-                                && <i className="material-icons deleteIcon" style={{
-                                    float: "right"
-                                }}
-                                    onClick={() => deletePost(item._id)}
-                                >delete</i>
 
-                            }</h5>
+                                <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
+                                    <img className="avatar" src={item.postedBy.pic} />
+                                    {item.postedBy.name}
+                                </Link>
+                                {item.postedBy._id !== state._id
+                                    && <img className="countryFlag" style={{
+                                        float: "right"
+                                    }}
+                                        src={`https://www.countryflags.io/${item.postedBy.country}/shiny/64.png`}
+                                    />
+
+                                }
+                                {item.postedBy._id == state._id
+                                    && <i className="material-icons deleteIcon" style={{
+                                        float: "right"
+                                    }}
+                                        onClick={() => deletePost(item._id)}
+                                    >delete</i>
+
+                                }</h5>
                             <div className="card-image">
                                 <img src={item.photo} />
                             </div>
@@ -164,9 +165,17 @@ const Home = () => {
                                     item.comments.map(record => {
                                         return (
                                             <div key={record._id} className="commentArea">
-                                                <p  ><span className="userName">{record.postedBy.name}</span> {record.text}</p>
-                                  
-                                                
+
+
+                                                <p  >
+                                                    <Link to={record.postedBy._id !== state._id ? "/profile/" + record.postedBy._id : "/profile"}>
+                                                        <img className="avatar" src={record.postedBy.pic} />
+                                                        <span className="userName">{record.postedBy.name}</span>{record.text}
+                                                    </Link>
+                                                    {/* <span className="userName"><img className="avatar" src={item.postedBy.pic}/>{record.postedBy.name}</span> {record.text} */}
+                                                </p>
+
+
                                             </div>
 
 
