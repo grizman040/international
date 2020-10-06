@@ -83,7 +83,7 @@ const SignUp = () => {
     return (
         <div className="mycard">
             <div className="card auth-card ">
-                <h2>Be a Cooekr</h2>
+                <h2>Be a part of International Cooking</h2>
                 <input type="text" placeholder="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)} />

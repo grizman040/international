@@ -11,6 +11,7 @@
     "nodemailer": "^6.4.11",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "nodemon": "^2.0.4",
+    "prop-types": "^15.7.2",
     "react-country-region-selector": "^3.0.0"
   },
   "devDependencies": {},
