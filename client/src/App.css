@@ -76,10 +76,18 @@ select{
     border-radius: 50%;
 }
 .countryFlag{
-    width: 40pd .x;
+    width: 40px;
 }
 .flagCountryProfile{
     width: 70px;
     height: 7vh;
     margin-top: 5px;
+}
+.commentMsg {
+    text-transform: capitalize;
+    background-color: rgba(248, 247, 247, 0.425);
+    box-shadow: 2px 3px 5px rgba(128, 128, 128, 0.397);
+    padding:  5px 15px 5px;
+    /* padding-right: 15px; */
+   border-radius: 50px;
 }

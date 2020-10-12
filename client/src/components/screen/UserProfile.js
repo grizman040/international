@@ -7,7 +7,7 @@ const Profile = () => {
     const { state, dispatch } = useContext(UserContext)
     const { userid } = useParams()
     const [showFollow, setShowFollow] = useState(state ? !state.following.includes(userid) : true)
-    console.log('testing user ' + userid);
+    // console.log('testing user ' + userid);
 
     useEffect(() => {
         fetch(`/user/${userid}`, {
@@ -37,7 +37,7 @@ const Profile = () => {
         }).then(res => res.json())
             .then(data => {
 
-                console.log(data);
+                // console.log(data);
                 dispatch({ type: "UPDATE", payload: { following: data.following, followers: data.followers } })
                 localStorage.setItem("user", JSON.stringify(data))
                 setProfile((prevState) => {

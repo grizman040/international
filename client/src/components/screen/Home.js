@@ -6,7 +6,7 @@ import moment from 'moment'
 
 const Home = () => {
     const [data, setData] = useState([])
-    const { state, dispatch } = useContext(UserContext)
+    const { state } = useContext(UserContext)
     useEffect(() => {
         fetch('/allposts', {
             headers: {
@@ -14,7 +14,7 @@ const Home = () => {
             }
         }).then(res => res.json())
             .then(result => {
-                console.log(result)
+                // console.log(result)
                 setData(result.posts)
             })
     }, [])
@@ -33,7 +33,7 @@ const Home = () => {
                 console.log(result)
                 const newData = data.map(item => {
 
-                    if (item._id == result._id) {
+                    if (item._id === result._id) {
                         return result
                     } else {
                         return item
@@ -58,7 +58,7 @@ const Home = () => {
             .then(result => {
                 //   console.log(result)
                 const newData = data.map(item => {
-                    if (item._id == result._id) {
+                    if (item._id === result._id) {
                         return result
                     } else {
                         return item
@@ -84,9 +84,9 @@ const Home = () => {
             })
         }).then(res => res.json())
             .then(result => {
-                console.log(result)
+                // console.log(result)
                 const newData = data.map(item => {
-                    if (item._id == result._id) {
+                    if (item._id === result._id) {
                         return result
                     } else {
                         return item
@@ -106,7 +106,7 @@ const Home = () => {
             }
         }).then(res => res.json())
             .then(result => {
-                console.log(result)
+                // console.log(result)
                 const newData = data.filter(item => {
                     return item._id !== result._id
                 })
@@ -122,7 +122,7 @@ const Home = () => {
                             <h5 style={{ padding: "5px" }}>
 
                                 <Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>
-                                    <img className="avatar" src={item.postedBy.pic} />
+                                    <img className="avatar" src={item.postedBy.pic} alt="avatar" />
                                     {item.postedBy.name}
                                 </Link>
                                 {item.postedBy._id !== state._id
@@ -157,7 +157,7 @@ const Home = () => {
                                 }
                                 <h6>{item.likes.length} likes</h6>
                                 <div className="postBody">
-                                    <h6><span className="userName"></span> {item.title}</h6>
+                                    <h6 style={{ fontWeight: "bold" }}>{item.title}</h6>
                                     <p style={{ fontWeight: "bold" }} >{item.body}</p>
                                 </div>
 
@@ -170,7 +170,7 @@ const Home = () => {
                                                 <p  >
                                                     <Link to={record.postedBy._id !== state._id ? "/profile/" + record.postedBy._id : "/profile"}>
                                                         <img className="avatar" src={record.postedBy.pic} />
-                                                        <span className="userName">{record.postedBy.name}</span>{record.text}
+                                                        <span className="userName">{record.postedBy.name} </span><span className="commentMsg">{record.text}</span>
                                                     </Link>
                                                     {/* <span className="userName"><img className="avatar" src={item.postedBy.pic}/>{record.postedBy.name}</span> {record.text} */}
                                                 </p>
