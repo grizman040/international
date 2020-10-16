@@ -98,15 +98,13 @@ const Profile = () => {
 
         </div>
 
-        <div>
+        <div className="userProfile">
           <div>
             <div style={{
               display: "flex",
               justifyContent: "space-around",
             }}>
-
-              <h3>{state ? state.name : "loading"}</h3>
-
+              <h4>{state ? state.name : "loading"}</h4>
               <img className="flagCountryProfile" src={`https://www.countryflags.io/${state ? state.country : ""}/shiny/64.png`} />
             </div>
             <h5>{state ? state.email : "loading"}</h5>

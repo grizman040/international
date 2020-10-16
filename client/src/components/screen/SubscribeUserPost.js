@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { UserContext } from '../../App'
 import { Link } from 'react-router-dom'
 const Home = () => {
+   
     const [data, setData] = useState([])
     const { state,dispatch } = useContext(UserContext)
     useEffect(() => {
@@ -88,6 +89,7 @@ const Home = () => {
                         return item
                     }
                 })
+               
                 setData(newData)
             }).catch(err => {
                 console.log(err)
@@ -107,6 +109,7 @@ const Home = () => {
                     return item._id !== result._id
                 })
                 // console.log(newData);
+
                 setData(newData)
             })
     }
@@ -155,7 +158,7 @@ const Home = () => {
                                     e.preventDefault()
                                     makeComment(e.target[0].value, item._id)
                                 }}>
-                                    <input type="text" placeholder="add a comment" />
+                                    <input  type="text" placeholder="add a comment" />
                                 </form>
 
                             </div>

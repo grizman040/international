@@ -5,8 +5,9 @@ import moment from 'moment'
 // console.log(moment().startOf('day').fromNow()); timer, from what time was created
 
 const Home = () => {
+    let [commentInput, setCommentInput ] = useState("") //to refresh input text area
     const [data, setData] = useState([])
-    const { state } = useContext(UserContext)
+    const { state, dispatch } = useContext(UserContext)
     useEffect(() => {
         fetch('/allposts', {
             headers: {
@@ -92,6 +93,8 @@ const Home = () => {
                         return item
                     }
                 })
+                console.log("Trying to clear...")
+                setCommentInput("") //to refresh input text area
                 setData(newData)
             }).catch(err => {
                 console.log(err)
@@ -126,14 +129,14 @@ const Home = () => {
                                     {item.postedBy.name}
                                 </Link>
                                 {item.postedBy._id !== state._id
-                                    && <img className="countryFlag" style={{
-                                        float: "right"
+                                    && <img className="countryFlag" alt="flag" style={{
+                                        float: "right" 
                                     }}
                                         src={`https://www.countryflags.io/${item.postedBy.country}/shiny/64.png`}
                                     />
 
                                 }
-                                {item.postedBy._id == state._id
+                                {item.postedBy._id === state._id
                                     && <i className="material-icons deleteIcon" style={{
                                         float: "right"
                                     }}
@@ -142,7 +145,7 @@ const Home = () => {
 
                                 }</h5>
                             <div className="card-image">
-                                <img src={item.photo} />
+                                <img src={item.photo} alt="postImg"/>
                             </div>
                             <div className="card-content">
                                 {item.likes.includes(state._id)
@@ -169,7 +172,7 @@ const Home = () => {
 
                                                 <p  >
                                                     <Link to={record.postedBy._id !== state._id ? "/profile/" + record.postedBy._id : "/profile"}>
-                                                        <img className="avatar" src={record.postedBy.pic} />
+                                                        <img className="avatar" src={record.postedBy.pic} alt="avatar"/>
                                                         <span className="userName">{record.postedBy.name} </span><span className="commentMsg">{record.text}</span>
                                                     </Link>
                                                     {/* <span className="userName"><img className="avatar" src={item.postedBy.pic}/>{record.postedBy.name}</span> {record.text} */}
@@ -189,7 +192,7 @@ const Home = () => {
                                     e.preventDefault()
                                     makeComment(e.target[0].value, item._id)
                                 }}>
-                                    <input type="text" placeholder="add a comment" />
+                                    <input onChange={(e) => setCommentInput(e.target.value) }  value={commentInput} type="text" placeholder="add a comment" />
                                 </form>
                             </div>
                         </div>

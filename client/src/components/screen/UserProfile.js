@@ -69,7 +69,6 @@ const Profile = () => {
         }).then(res => res.json())
             .then(data => {
 
-                console.log(data);
                 dispatch({ type: "UPDATE", payload: { following: data.following, followers: data.followers } })
                 localStorage.setItem("user", JSON.stringify(data))
 
@@ -107,8 +106,8 @@ const Profile = () => {
                         </div>
                         <div>
                             <div style={{
-                                display:"flex",
-                                justifyContent:"space-around"
+                                display: "flex",
+                                justifyContent: "space-around"
                             }}>
                                 <h4>{userProfile.user.name}</h4>
                                 <img className="flagCountryProfile" src={`https://www.countryflags.io/${state ? state.country : ""}/shiny/64.png`} />
