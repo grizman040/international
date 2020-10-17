@@ -93,7 +93,6 @@ const Home = () => {
                         return item
                     }
                 })
-                // console.log("Trying to clear...")
                 setCommentInput("") //to refresh input text area
                 setData(newData)
             }).catch(err => {
